@@ -1,0 +1,524 @@
+/* app.css */
+
+.mobile-message {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .mobile-message {
+    display: block;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    padding: 10px;
+  }
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 0;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #212121;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: none;
+}
+
+.rlbtn{
+  --bg-color: #fff;
+  --main-color: #323232;
+  background-color: var(--bg-color);
+  border: 2px solid var(--main-color);
+  border-radius: 34px;
+  box-shadow: 4px 4px var(--main-color);
+  z-index: 1000;
+  font-size: 0.9em;
+  font-weight: 30;
+  padding: 7px 7px 7px 7px;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.rl-container {
+  position: absolute;
+  top: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dd-container{
+  position: absolute;
+  top: 328px;
+  right:250px;
+  z-index: 1000;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  color: #000; 
+  background-color: #fff;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  --bg-color: #fff;
+  --main-color: #323232;
+  background-color: var(--bg-color);
+  border: 2px solid var(--main-color);
+  border-radius: 13px;
+  box-shadow: 4px 4px var(--main-color);
+  z-index: 1000;
+}
+
+.dropdown-content input[type="checkbox"] {
+  display: none;
+}
+
+.dropdown-content a {
+  display: block;
+  margin-bottom: 5px;
+  color: rgb(0, 0, 0);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content label {
+  display: block;
+  margin-bottom: 5px;
+  padding: 8px 24px 8px 32px;
+  cursor: pointer;
+  position: relative;
+}
+
+.dropdown-content label::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  background-color: #fff;
+  position: absolute;
+  left: 16px; 
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background-color 0.3s ease; 
+}
+
+.dropdown-content label.selected::before {
+  background-color: #000; /* Change color to black when selected */
+}
+
+.dropdown-content label.selected::before {
+  background-color: #000; 
+}
+
+.dropdown-content label:hover {
+  background-color: #f2f2f2;
+  border-radius: 13px;
+}
+
+.dropdown-content a:hover {
+  background-color: #4e4e4e;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropbtn{
+  --bg-color: #fff;
+  --main-color: #323232;
+  background-color: var(--bg-color);
+  border: 2px solid var(--main-color);
+  border-radius: 34px;
+  box-shadow: 4px 4px var(--main-color);
+  z-index: 1000;
+  font-size: 0.9em;
+  font-weight: 30;
+  padding: 7px 7px 7px 7px;
+  line-height: 1.1;
+}
+
+.wrapper {
+  --font-color-dark: #323232;
+  --font-color-light: #FFF;
+  --bg-color: #fff;
+  --main-color: #323232;
+  width: 375px;
+  height: 36px;
+  position: absolute;
+  top: 325px;
+  background-color: var(--bg-color);
+  border: 2px solid var(--main-color);
+  border-radius: 34px;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 4px 4px var(--main-color);
+  z-index: 1000;
+}
+
+.option {
+  width: 90px;
+  height: 28px;
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  appearance: none;
+  cursor: pointer;
+}
+
+.btn {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.span {
+  color: var(--font-color-dark);
+}
+
+.input:checked + .btn {
+  background-color: var(--main-color);
+}
+
+.input:checked + .btn .span {
+  color: var(--font-color-light);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.0em;
+  line-height: 1.1;
+}
+
+.leaderboard-section {
+  position: absolute; /* Position the section */
+  top: 250px;
+  left: 50px; /* Adjust left positioning as needed */
+  width: 75%; /* Width of the containers */
+}
+
+#app {
+  max-width: 1080px;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 20px; /* Padding from the top */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align children to the center */
+}
+
+.checkboxes {
+  margin-bottom: 20px; /* Margin at the bottom of checkboxes */
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  border-radius: 35px;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  height: 50px; /* Fixed height for the card */
+}
+
+.rank {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-right: 20px;
+  min-width: 40px; /* Ensure rank column has minimum width */
+    flex-shrink: 0;
+}
+
+.thumbnail {
+  width: 175px;
+  height: 98px;
+  overflow: hidden;
+  position: relative; /* Change to relative */
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px; /* Add rounded corners */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add drop shadow */
+}
+
+.entry-details {
+  flex-grow: 1;
+  padding-left: 20px;
+  overflow: hidden;
+  align-items: center;
+  flex: 1;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 1.3em;
+  word-wrap: break-word;
+  position: absolute;
+  top: -10px;
+  margin-bottom: 5px;
+  line-height: 1.0;
+}
+
+.description {
+  font-size: 0.8em;
+  position: absolute;
+  top: 35px;
+  word-wrap: break-word;
+  line-height: 1.4;
+  flex-shrink: 1; /* Allow shrinking */
+}
+
+/* Displayed views style */
+.displayed-views {
+  font-size: 1em; /* Adjust size as needed */
+  font-weight: bold;
+  text-align: right;
+  position: absolute;
+  bottom: 0px;
+  right: 15px;
+  line-height: -1.4;
+  color: #ffffff; /* Optional: Set text color */
+}
+
+.stamp-icon {
+  width: auto;
+  height: auto;
+  max-width: 60px;
+  max-height: 60px;
+  transform: rotate(-30deg);
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  overflow: visible;
+}
+
+/* Styles for the entry squares */
+.highlights {
+  display: flex; /* Display the entry squares in a row */
+  flex-wrap: wrap; /* Allow wrapping to the next line if needed */
+}
+
+.highlights-square {
+  width: 100px; /* Adjust as needed */
+  margin: 5px;
+  text-align: left;
+}
+
+.higjlights-square img {
+  width: 80px; /* Adjust as needed */
+  height: 80px; /* Adjust as needed */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.highlights-details {
+  font-size: 12px;
+  color: white; /* Text color set to white */
+  margin-top: 5px; /* Add margin to create separation */
+  line-height: 100%;
+}
+
+
+@media (max-width: 576px) { 
+  .rlbtn{
+    font-size: 0.9em; 
+    font-weight: 30;
+    padding: 7px 7px 7px 7px;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  
+  .rl-container {
+    position: absolute;
+    top: 10%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dd-container{
+    position: absolute;
+    top: 45%;
+    right: 1%;
+    z-index: 1000;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .wrapper {
+    width: 375px;
+    height: 36px;
+    position: absolute;
+    top: 30%;
+  }
+  
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+  
+  h1 {
+    font-size: 3.0em;
+    line-height: 1.1;
+  }
+  
+  .leaderboard-section {
+    position: absolute; 
+    top: 250px;
+    left: 50px; 
+    width: 90%;
+  }
+  
+  #app {
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: left;
+    padding-top: 20px; /* Padding from the top */
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align children to the center */
+  }
+
+  
+  .card {
+    width: 100%;
+    height: 15px; /* Fixed height for the card */
+  }
+  
+  .rank {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-right: 5px;
+    min-width: 40px; /* Ensure rank column has minimum width */
+      flex-shrink: 0;
+  }
+  
+  .thumbnail {
+    width: 110px;
+    height: 62px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  
+  .entry-details {
+    flex-grow: 1;
+    padding-left: 20px;
+    overflow: hidden;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .name {
+    font-size: 0.7em;
+    position: absolute;
+    top: -10px;
+    margin-bottom: 5px;
+    line-height: 1.0;
+  }
+  
+  .description {
+    font-size: 0.4em;
+    position: absolute;
+    top: 35%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    flex-shrink: 1; /* Allow shrinking */
+  }
+  
+  /* Displayed views style */
+  .displayed-views {
+    font-size: 0.5em; /* Adjust size as needed */
+    font-weight: bold;
+    text-align: right;
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+    line-height: -1.4;
+    color: #ffffff; /* Optional: Set text color */
+  }
+  
+  .stamp-icon {
+    width: auto;
+    height: auto;
+    max-width: 35px;
+    max-height: 35px;
+    transform: rotate(-30deg);
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    overflow: visible;
+  }
+  
+  /* Styles for the entry squares */
+  .highlights {
+    display: flex; /* Display the entry squares in a row */
+    flex-wrap: wrap; /* Allow wrapping to the next line if needed */
+  }
+  
+  .highlights-square {
+    width: 100px; /* Adjust as needed */
+    margin: 5px;
+    text-align: left;
+  }
+  
+  .higjlights-square img {
+    width: 80px; /* Adjust as needed */
+    height: 80px; /* Adjust as needed */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .highlights-details {
+    font-size: 12px;
+    color: white; /* Text color set to white */
+    margin-top: 5px; /* Add margin to create separation */
+    line-height: 100%;
+  }
+}
