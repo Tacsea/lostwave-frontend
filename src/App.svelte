@@ -301,9 +301,9 @@
 </script>
 
 <main>
-  <div class="mobile-message">
+  <!-- <div class="mobile-message">
     For a better experience, switch to a desktop mode.
-  </div>
+  </div> -->
   <div class="container">
     <div class="dd-container">
       <div class="dropdown" on:click={toggleDropdown}>
