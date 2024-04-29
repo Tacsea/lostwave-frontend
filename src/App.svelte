@@ -349,8 +349,8 @@
       {/each}
     </div>
     -->
+    <h1>Charts.beta</h1>
     <section class="leaderboard-section">
-      <h1>Charts</h1>
       {#each $leaderboard as entry}
         <div class="card" style="background-color: {entry.cardColor}">
           <div class="rank">#{entry.rank}</div>
