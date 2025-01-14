@@ -10,4 +10,5 @@ export const includeLost = writable(false);
 export const includeHidden = writable(false);
 export const excludeHoaxes = writable(false);
 export const dropdownOpen = writable(false);
+export const Percentage = writable(false);
 

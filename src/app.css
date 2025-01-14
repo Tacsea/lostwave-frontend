@@ -26,7 +26,21 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: none;
+  scrollbar-width: none; 
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.buttons-section {
+  position: absolute;
+  width: 800px;
+  height: 230px;
+  /* border: 2px solid rgb(200, 24, 24); */
+  margin-bottom: 20px;
+}
+
 
 .rlbtn{
   --bg-color: #fff;
@@ -45,15 +59,15 @@
 
 .rl-container {
   position: absolute;
-  top: 13%;
+  top: 95px;
+  right: 10px;
   display: flex;
   flex-direction: column;
 }
 
 .dd-container{
   position: absolute;
-  top: 31%;
-  right: 22%;
+  top: 185px;
   z-index: 1000;
 }
 
@@ -158,7 +172,7 @@
   width: 375px;
   height: 36px;
   position: absolute;
-  top: 30%;
+  top: 185px;
   background-color: var(--bg-color);
   border: 2px solid var(--main-color);
   border-radius: 34px;
@@ -198,6 +212,7 @@
 
 .span {
   color: var(--font-color-dark);
+  /*font*/
 }
 
 .input:checked + .btn {
@@ -218,8 +233,8 @@ h1 {
   font-size: 3.0em;
   line-height: 1.1;
   position: absolute;
-  top: 23%;
-  left: 2%;
+  top: 85px;
+  left: 10px;
 }
 
 .leaderboard-section {
@@ -227,6 +242,7 @@ h1 {
   top: 250px;
   left: 50px; 
   width: 75%; 
+  margin-top: 20px;
 }
 
 #app {
@@ -284,31 +300,41 @@ h1 {
 }
 
 .entry-details {
-  flex-grow: 1;
   padding-left: 20px;
-  overflow: hidden;
+  overflow: scroll;
   align-items: center;
-  flex: 1;
+  /* border-style: solid;
+  border-color: red; */
+  position: relative;
+  width: 150%;   
+  height: 170%; 
+
 }
 
 .name {
   font-weight: bold;
-  font-size: 1.3em;
+  font-size: 1.2em;
   word-wrap: break-word;
-  position: relative;
-  top: -10px;
-  margin-bottom: 25px;
+  top: 100px;
+  left: 5;
   line-height: 1.0;
+  margin-bottom: 10px;
+}
+
+.description-box {
+  /* border-color: blue;
+  border-style: solid; */
+  width: 75%;
+  word-wrap: break-word;
+  line-height: 1.4;
+  min-height: 50%;
 }
 
 .description {
   font-size: 0.8em;
-  position: absolute;
-  top: 35px;
-  word-wrap: break-word;
-  margin-top: 15px;
-  line-height: 1.4;
-  flex-shrink: 1; 
+  white-space: pre-line; 
+  position: relative;
+  bottom: 10px;
 }
 
 .displayed-views {
@@ -359,6 +385,14 @@ h1 {
   line-height: 100%;
 }
 
+@media (min-width: 576px) {
+  .wrapper{
+    left: 10px;
+  }
+  .dd-container{
+    right: 10px;
+  }
+}
 
 @media (max-width: 576px) { 
   .rlbtn{
@@ -366,21 +400,6 @@ h1 {
     font-weight: 300;
     line-height: 1.1;
     margin-bottom: 3px;
-  }
-  
-  .rl-container {
-    position: absolute;
-    top: 15%;
-    right: -1%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .dd-container{
-    position: absolute;
-    top: 27%;
-    left: 2.5%;
-    z-index: 1000;
   }
   
   .dropdown {
@@ -395,12 +414,14 @@ h1 {
     line-height: 1.1;
   }
   
+  .dd-container{
+    left: 10px;
+  }
+  
   .wrapper {
     width: 310px;
     height: 27px;
-    position: absolute;
-    top: 27%;
-    left: 20%;
+    right: 10px;
   }
   
   .btn {
@@ -417,9 +438,7 @@ h1 {
   h1 {
     font-size: 2.0em;
     line-height: 1.1;
-    position: absolute;
-    top: 15%;
-    right: 50%;
+    top: 110px;
   }
   
   .leaderboard-section {
@@ -427,6 +446,10 @@ h1 {
     top: 250px;
     left: 5px; 
     width: 90%;
+  }
+
+  .buttons-section{
+    width: 100%;
   }
   
   #app {
@@ -464,26 +487,47 @@ h1 {
     flex-shrink: 0;
   }
   
+  .entry-details {
+    padding-left: 20px;
+    /* border-style: solid;
+    border-color: red; */
+    position: relative;
+    width: 150%;   
+    height: 320%; 
+  
+  }
+  
   .name {
+    font-weight: bold;
     font-size: 0.6em;
-    margin-bottom: 1px;
+    word-wrap: break-word;
+    top: 100px;
+    left: 5;
     line-height: 1.0;
+    margin-bottom: 10px;
+  }
+  
+  .description-box {
+    /* border-color: blue;
+    border-style: solid; */
+    width: 65%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    min-height: 50%;
   }
   
   .description {
-    font-size: 0.26em;
-    position: absolute;
-    margin-top: -1px;
-    line-height: 1.4;
-    flex-shrink: 1; 
+    font-size: 0.2em;
+    position: relative;
+    bottom: 7px;
   }
   
   .displayed-views {
     font-size: 0.5em; 
+    position: absolute;
     bottom: 0px;
-    right: 15px;
+    right: 5px;
     line-height: -1.4;
-    color: #ffffff; 
   }
   
   .stamp-icon {
@@ -522,5 +566,166 @@ h1 {
     color: white; /* Text color set to white */
     margin-top: 5px; /* Add margin to create separation */
     line-height: 100%;
+  }
+}
+
+@media (max-width: 400px) { 
+  .rlbtn{
+    font-size: 0.65em; 
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropbtn{
+    font-size: 0.65em;
+    font-weight: 300;
+    padding: 6px 6px 6px 6px;
+    line-height: 1.1;
+  }
+  
+  .wrapper {
+    width: 265px;
+    height: 22px;
+    right: 0px;
+  }
+
+  .span{
+    font-size: 13px;
+  }
+
+  .option {
+    width: 90px;
+    height: 22px;
+  }
+  .dd-container{
+    left: 10px;
+  }
+
+  .rl-container{
+    right: 0px;
+    top: 110px;
+  }
+  
+  .btn {
+    width: 95%;
+    height: 80%; 
+  }
+  
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+  
+  h1 {
+    font-size: 2.0em;
+    line-height: 1.1;
+    top: 110px;
+  }
+  
+  .leaderboard-section {
+    position: absolute; 
+    top: 250px;
+    left: 5px; 
+    width: 90%;
+  }
+
+  .buttons-section{
+    width: 100%;
+  }
+  
+  #app {
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: left;
+    padding-top: 20px; 
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+
+  .card {
+    width: 100%;
+    height: 15px; 
+  }
+  
+  .rank {
+    font-weight: bold;
+    font-size: 1.4em;
+    margin-right: 10px;
+    min-width: 20px; 
+  }
+  
+  .thumbnail {
+    width: 110px;
+    height: 62px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  
+  .entry-details {
+    padding-left: 20px;
+    /* border-style: solid;
+    border-color: red; */
+    position: relative;
+    width: 150%;   
+    height: 320%; 
+  
+  }
+  
+  .name {
+    font-weight: bold;
+    font-size: 0.5em;
+    word-wrap: break-word;
+    top: 100px;
+    left: 5;
+    line-height: 1.0;
+    margin-bottom: 10px;
+  }
+  
+  .description-box {
+    /* border-color: blue;
+    border-style: solid; */
+    width: 60%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    min-height: 50%;
+  }
+  
+  .description {
+    font-size: 6px;
+    position: relative;
+    bottom: 2px;
+  }
+  
+  .displayed-views {
+    font-size: 0.4em; 
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+    line-height: -1.4;
+  }
+  
+  .stamp-icon {
+    width: auto;
+    height: auto;
+    max-width: 35px;
+    max-height: 35px;
+    transform: rotate(-30deg);
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    overflow: visible;
   }
 }

@@ -11,6 +11,7 @@
     includeLost,
     includeHidden,
     excludeHoaxes,
+    Percentage,
   } from './store.js';
 
   // Define the type of the entry object
@@ -53,6 +54,10 @@
     'PLACEHOLDER8': '#66AD90',
     'PLACEHOLDER9': '#060270',
     'PLACEHOLDER10': '#FE9900',
+    '1stPlace': '#996600',
+    '2ndPlace': '#737373',
+    '3rdPlace': '#802b00',
+    'NEW': 'black',
   };
 
   // Create a writable store for the leaderboard data
@@ -112,7 +117,8 @@
       const includeLostValue = get(includeLost);
       const includeHiddenValue = get(includeHidden);
       const excludeHoaxesValue = get(excludeHoaxes);
-      const currentTimelyValue = get(currentTimely)
+      const currentTimelyValue = get(currentTimely);
+      const PercentageValue = get(Percentage);
 
       // Filter out entries based on checkbox states
       let filteredData = data.filter((entry: Entry) => {
@@ -145,7 +151,7 @@
       filteredData = filteredData.map((entry: Entry) => ({
         ...entry,
         cardColor: userColorMap[entry.choice] || 'black',
-        displayedViews: calculateDisplayedViews(entry, includeCoverageValue, includeMentionsValue, includeOtherSitesValue, currentTimelyValue )
+        displayedViews: calculateDisplayedViews(entry, includeCoverageValue, includeMentionsValue, includeOtherSitesValue, currentTimelyValue, PercentageValue )
       }));
 
       // Sort filtered entries by displayedViews in descending order
@@ -153,6 +159,7 @@
 
       // Assign rank based on the sorted order
       filteredData.forEach((entry: Entry, index: number) => {
+        'entry.rank = filteredData.length - index;'
         entry.rank = index + 1;
       });
 
@@ -164,12 +171,13 @@
     }
   }
 
-  function calculateDisplayedViews(
+    function calculateDisplayedViews(
     entry: Entry,
     includeCoverage: boolean,
     includeMentions: boolean,
     includeOtherSites: boolean,
     currentTimely: string,
+    Percentage: boolean,
   ): number {
     let displayedViews = 0;
 
@@ -187,12 +195,33 @@
       if (includeOtherSites) {
         displayedViews += entry.manual_other;
       }
-    } else if (currentTimely === 'daily') {
-      displayedViews += entry.daily_views;
-    } else if (currentTimely === 'weekly') {
-      displayedViews += entry.weekly_views;
-    } else if (currentTimely === 'monthly') {
-      displayedViews += entry.monthly_views;
+    } else {
+      let oldViews = 0;
+      let newViews = entry.total_views;
+
+      if (currentTimely === 'daily') {
+        oldViews = entry.total_views - entry.daily_views;
+        displayedViews = entry.daily_views;
+      } else if (currentTimely === 'weekly') {
+        oldViews = entry.total_views - entry.weekly_views;
+        displayedViews = entry.weekly_views;
+      } else if (currentTimely === 'monthly') {
+        oldViews = entry.total_views - entry.monthly_views;
+        displayedViews = entry.monthly_views;
+      }
+
+      if (Percentage) {
+        if (oldViews > 0) {
+          let averageViews = (newViews + oldViews) / 2;
+          displayedViews = ((newViews - oldViews) / oldViews) * 100;
+/*           const percentageChange = (newViews - oldViews) / oldViews;
+          const scaleFactor = entry.total_views / 1014339;
+          const normalizedPercentageChange = percentageChange * scaleFactor;
+          displayedViews = normalizedPercentageChange * 100; */
+        } else {
+          displayedViews = 0; // Avoid division by zero
+        }
+      }
     }
 
     return displayedViews;
@@ -216,6 +245,7 @@
   let unsubscribeHidden: () => void;
   let unsubscribeHoaxes: () => void;
   let unsubscribeCurrentTimely: () => void;
+  let unsubscribePercentage: () => void;
 
   $: {
     unsubscribeLostwave = includeLostwave.subscribe(fetchLeaderboard);
@@ -227,6 +257,7 @@
     unsubscribeHidden = includeHidden.subscribe(fetchLeaderboard);
     unsubscribeHoaxes = excludeHoaxes.subscribe(fetchLeaderboard);
     unsubscribeCurrentTimely = currentTimely.subscribe(fetchLeaderboard);
+    unsubscribePercentage = Percentage.subscribe(fetchLeaderboard)
   }
 
   // Cleanup function
@@ -240,6 +271,7 @@
     unsubscribeHidden();
     unsubscribeHoaxes();
     unsubscribeCurrentTimely();
+    unsubscribePercentage();
   });
 
   const highlights = derived(leaderboard, ($leaderboard) => {
@@ -298,58 +330,75 @@
       }
     }
   };
+
+  let percentageCheckbox: HTMLInputElement | null = null;
+  $: if ($currentTimely === 'all-time') {
+    Percentage.set(false);
+    if (percentageCheckbox) {
+      percentageCheckbox.disabled = true;
+    }
+  } else {
+    if (percentageCheckbox) {
+      percentageCheckbox.disabled = false;
+    }
+  }
 </script>
 
 <main>
   <!-- <div class="mobile-message">
     For a better experience, switch to a desktop mode.
   </div> -->
-  <div class="container">
-    <div class="dd-container">
-      <div class="dropdown" on:click={toggleDropdown}>
-        <button class="dropbtn">Options</button>
-        <div class="dropdown-content" style="{dropdownOpen ? 'display: block;' : 'display: none;'}" on:click|stopPropagation>
-          <label class:selected={$includeLostwave ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeLostwave} on:keydown={handleCheckboxKeyDown}> Only on Lostwave </label>
-          <label class:selected={$includeCoverage ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeCoverage} on:keydown={handleCheckboxKeyDown}> Include Coverage </label>
-          <label class:selected={$includeMentions ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeMentions} on:keydown={handleCheckboxKeyDown}> Include Mentions </label>
-          <label class:selected={$includeOtherSites ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeOtherSites} on:keydown={handleCheckboxKeyDown}> Include Other Sites </label>
-          <label class:selected={$includeFound ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeFound} on:keydown={handleCheckboxKeyDown}> Found </label>
-          <label class:selected={$includeLost ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeLost} on:keydown={handleCheckboxKeyDown}> Lost </label>
-          <!-- <label class:selected={$includeHidden ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeHidden} on:keydown={handleCheckboxKeyDown}> Hidden </label> -->
-          <label class:selected={$excludeHoaxes ? 'selected' : ''}> <input type="checkbox" bind:checked={$excludeHoaxes} on:keydown={handleCheckboxKeyDown}> Exclude Hoaxes </label>
+  <section class="buttons-section">
+    <h1>Lostwave Charts</h1>
+    <div class="container">
+      <div class="dd-container">
+        <div class="dropdown" on:click={toggleDropdown}>
+          <button class="dropbtn">Options</button>
+          <div class="dropdown-content" style="{dropdownOpen ? 'display: block;' : 'display: none;'}" on:click|stopPropagation>
+            <label class:selected={$includeLostwave ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeLostwave} on:keydown={handleCheckboxKeyDown}> Only on Lostwave </label>
+            <label class:selected={$includeCoverage ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeCoverage} on:keydown={handleCheckboxKeyDown}> Include Coverage </label>
+            <label class:selected={$includeMentions ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeMentions} on:keydown={handleCheckboxKeyDown}> Include Mentions </label>
+            <label class:selected={$includeOtherSites ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeOtherSites} on:keydown={handleCheckboxKeyDown}> Include Other Sites </label>
+            <label class:selected={$includeFound ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeFound} on:keydown={handleCheckboxKeyDown}> Found </label>
+            <label class:selected={$includeLost ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeLost} on:keydown={handleCheckboxKeyDown}> Lost </label>
+            <!-- <label class:selected={$includeHidden ? 'selected' : ''}> <input type="checkbox" bind:checked={$includeHidden} on:keydown={handleCheckboxKeyDown}> Hidden </label> -->
+            <label class:selected={$excludeHoaxes ? 'selected' : ''}> <input type="checkbox" bind:checked={$excludeHoaxes} on:keydown={handleCheckboxKeyDown}> Exclude Hoaxes </label>
+            <label class:selected={$Percentage ? 'selected' : ''}>
+              <input type="checkbox" bind:this={percentageCheckbox} bind:checked={$Percentage} on:keydown={handleCheckboxKeyDown} disabled={$currentTimely === 'all-time'}> Percentage View
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="wrapper">
-      {#each timely as timelies}
-        <div class="option">
-          <input class="input" type="radio" name="btn" value={timelies} bind:group={$currentTimely} on:change={handleRadioChange}>
-          <div class="btn">
-            <span class="span">{timelies}</span>
+      <div class="wrapper">
+        {#each timely as timelies}
+          <div class="option">
+            <input class="input" type="radio" name="btn" value={timelies} bind:group={$currentTimely} on:change={handleRadioChange}>
+            <div class="btn">
+              <span class="span">{timelies}</span>
+            </div>
           </div>
-        </div>
-      {/each}
-    </div>
-    <div class="rl-container">
-      <button class="rlbtn" on:click={openRandomLink}>Random Song</button>
-      <button class="rlbtn" on:click={openRandomLinkWithChoice}>Random Highlight</button>
-    </div>
-    <!--
-      HERE LIES THE HIGHLIGHTS PIN BOARD. GONE BUT NEVER FORGOTTEN.
-    <div class="highlights">
-      {#each $highlights as entry}
-        <div class="highlights-square">
-          <a href={entry.main_youtube_link} target="_blank">
-            <img src={entry.thumbnail_link} alt={entry.name} />
-          </a>
-          <div class="highlights-details">
-            #{entry.rank} - {entry.name}
+        {/each}
+      </div>
+      <div class="rl-container">
+        <button class="rlbtn" on:click={openRandomLink}>Random Song</button>
+        <button class="rlbtn" on:click={openRandomLinkWithChoice}>Random Highlight</button>
+      </div>
+      <!--
+        HERE LIES THE HIGHLIGHTS PIN BOARD. GONE BUT NEVER FORGOTTEN.
+      <div class="highlights">
+        {#each $highlights as entry}
+          <div class="highlights-square">
+            <a href={entry.main_youtube_link} target="_blank">
+              <img src={entry.thumbnail_link} alt={entry.name} />
+            </a>
+            <div class="highlights-details">
+              #{entry.rank} - {entry.name}
+            </div>
           </div>
-        </div>
-      {/each}
-    </div>
-    -->
-    <h1>Charts.beta</h1>
+        {/each}
+      </div>
+      -->
+    </section>
     <section class="leaderboard-section">
       {#each $leaderboard as entry}
         <div class="card" style="background-color: {entry.cardColor}">
@@ -365,14 +414,26 @@
           </div>
           <div class="entry-details">
             <p class="name">{entry.name}</p>
-            <p class="description">{entry.description}</p>
-            <p class="displayed-views">Views: {entry.displayedViews.toLocaleString()}</p>
-            {#if entry.choice !== 'NOT'}
-              <img class="stamp-icon" src="./stamp.png" alt="Stamp Icon" />
-            {/if}
+            <div class="description-box">
+              <p class="description">{entry.description}</p>
+            </div>
+            <p class="displayed-views">
+              {#if $Percentage}
+                {entry.displayedViews.toFixed(2)}%
+              {:else}
+                Views: {entry.displayedViews.toLocaleString()}
+              {/if}
+            </p>
           </div>
+          <!--
+          {#if entry.choice !== 'NOT'}
+          <img class="stamp-icon" src="./stamp.png" alt="Stamp Icon" />
+          {/if}
+          -->
+          {#if entry.choice == 'NEW'}
+          <img class="stamp-icon" src="./New.png" alt="New Icon" />
+          {/if}
         </div>
       {/each}
     </section>
-  </div>
 </main>
